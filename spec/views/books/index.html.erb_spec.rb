@@ -10,15 +10,15 @@ RSpec.describe 'books/index', type: :view do
                price: '9.99'
              ),
              Book.create!(
-               name: 'Name',
-               price: '9.99'
+               name: 'Hardik',
+               price: '100'
              )
            ])
   end
 
   it 'renders a list of books' do
     render
-    assert_select 'tr>td', text: 'Name'.to_s, count: 2
-    assert_select 'tr>td', text: '9.99'.to_s, count: 2
+    expect(rendered).to match(/Name/)
+    expect(rendered).to include('Hardik')
   end
 end
