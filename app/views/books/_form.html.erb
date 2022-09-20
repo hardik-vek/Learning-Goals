@@ -22,6 +22,15 @@
   </div>
 
   <div>
+    <%= form.label :Genre, style: "display: block" %>
+    <%= form.select :genre, Book.genres.keys %>
+  </div>
+
+  <div>
+     <%= form.hidden_field :author_id, value: 1 %> 
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>
