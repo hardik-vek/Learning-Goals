@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BooksController < ApplicationController
-  before_action :authenticate_user! 
+  before_action :authenticate_user!
   before_action :set_book, only: %i[show edit update destroy]
   before_action :authorize_user, only: %i[edit destroy]
 
@@ -19,9 +19,7 @@ class BooksController < ApplicationController
   end
 
   # GET /books/1/edit
-  def edit; 
-
-  end
+  def edit; end
 
   # POST /books or /books.json
   def create
@@ -75,7 +73,7 @@ class BooksController < ApplicationController
 
   def authorize_user
     if current_user.id != @book.user_id
-      flash[:notice] = "you are not valid user to edit or delete"  
+      flash[:notice] = 'you are not valid user to edit or delete'
       redirect_to root_path
     end
   end

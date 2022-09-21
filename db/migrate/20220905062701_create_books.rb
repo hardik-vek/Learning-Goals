@@ -6,7 +6,7 @@ class CreateBooks < ActiveRecord::Migration[7.0]
       t.string :name
       t.decimal :price
       t.integer :genre
-      
+
       t.timestamps
     end
   end
