@@ -2,7 +2,7 @@
 
 class HomesController < ApplicationController
   def index
-    @authors = Author.all
+    @users = User.all
     @books = Book.all
   end
 end

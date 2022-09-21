@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class BooksController < ApplicationController
+  before_action :authenticate_user! 
   before_action :set_book, only: %i[show edit update destroy]
+  before_action :authorize_user, only: %i[edit destroy]
 
   # GET /books or /books.json
   def index
@@ -17,7 +19,9 @@ class BooksController < ApplicationController
   end
 
   # GET /books/1/edit
-  def edit; end
+  def edit; 
+
+  end
 
   # POST /books or /books.json
   def create
@@ -25,7 +29,7 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.save
-        format.html { redirect_to book_url(@book), notice: 'Book was successfully created.' }
+        format.html { redirect_to root_url, notice: 'Book was successfully created.' }
         format.json { render :show, status: :created, location: @book }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +42,7 @@ class BooksController < ApplicationController
   def update
     respond_to do |format|
       if @book.update(book_params)
-        format.html { redirect_to book_url(@book), notice: 'Book was successfully updated.' }
+        format.html { redirect_to root_url, notice: 'Book was successfully updated.' }
         format.json { render :show, status: :ok, location: @book }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +56,7 @@ class BooksController < ApplicationController
     @book.destroy
 
     respond_to do |format|
-      format.html { redirect_to books_url, notice: 'Book was successfully destroyed.' }
+      format.html { redirect_to root_url, notice: 'Book was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -66,6 +70,13 @@ class BooksController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def book_params
-    params.require(:book).permit(:name, :price, :author_id, :genre)
+    params.require(:book).permit(:name, :price, :user_id, :genre)
+  end
+
+  def authorize_user
+    if current_user.id != @book.user_id
+      flash[:notice] = "you are not valid user to edit or delete"  
+      redirect_to root_path
+    end
   end
 end
