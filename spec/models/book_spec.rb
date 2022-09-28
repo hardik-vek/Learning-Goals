@@ -19,6 +19,16 @@ RSpec.describe Book, type: :model do
     expect(book).to_not be_valid
   end
 
+  it 'book have valid user ' do
+    book.user = nil
+    expect(book).to_not be_valid
+  end
+
+  it 'book have valid genre ' do
+    book.genre = nil
+    expect(book).to_not be_valid
+  end
+
   it 'book have valid minimum size name  ' do
     book.name = 'tst'
     expect(book).to_not be_valid
