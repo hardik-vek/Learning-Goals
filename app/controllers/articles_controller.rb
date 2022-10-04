@@ -15,6 +15,7 @@ class ArticlesController < ApplicationController
   def create 
     @article = Article.new(articles_params)
     if @article.save
+      ArticleMailer.with(article: @article).welcome_article.deliver_later
       flash[:notice] = 'Article created successfully'
       redirect_to articles_path
     else
@@ -27,6 +28,7 @@ class ArticlesController < ApplicationController
 
   def update
     if @article.update(articles_params)
+      ArticleMailer.with(article: @article).update_article.deliver_later
       flash[:notice] = 'Article updated successfully'
       redirect_to articles_path
     else
