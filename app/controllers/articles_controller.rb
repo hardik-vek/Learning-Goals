@@ -6,6 +6,7 @@ class ArticlesController < ApplicationController
   end
 
   def show
+    
   end
 
   def new
@@ -15,7 +16,7 @@ class ArticlesController < ApplicationController
   def create 
     @article = Article.new(articles_params)
     if @article.save
-      ArticleMailer.with(article: @article).delay.welcome_article # send a mail
+      ArticleMailer.with(article: @article).delay( priority: 0).welcome_article # send a mail
       TestDelayedJob.new.perform # just dummy method
       flash[:notice] = 'Article created successfully'
       redirect_to articles_path
