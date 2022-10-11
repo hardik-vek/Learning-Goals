@@ -25,8 +25,7 @@ RSpec.describe Book, type: :model do
   end
 
   it 'book have valid genre ' do
-    book.genre = nil
-    expect(book).to_not be_valid
+    should define_enum_for(:genre).with_values([:fiction, :non_fiction])
   end
 
   it 'book have valid minimum size name  ' do
