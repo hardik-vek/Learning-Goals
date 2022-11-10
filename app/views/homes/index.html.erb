@@ -1,0 +1,73 @@
+<% if user_signed_in?%>
+<p>Hello, <%=  current_user.username %></p>
+<h2>------------------</h2>
+<h1>User's listing</h1>
+<table>
+    <th>User name</th>
+    <th>User Email</th>
+    <% @users.each do |user| %>
+    <tr>
+      <td><%= user.username %></td>
+      <td><%= user.email %></td>
+    </tr>
+    <% end %>
+</table>
+<h2>------------------</h2>
+<h1>Book's listing</h1>
+<table>
+    <th>Book name</th>
+    <th>Book Price</th>
+    <th>Book Genre</th>
+    <th>Book's user</th>
+    <th>Show</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    <% @books.each do |book| %>
+    <tr>
+      <td><%= book.name %></td>
+      <td><%= book.price %></td>
+      <td><%= book.genre %></td>
+      <td><%= book.user.username %></td>
+      <td><%= button_to "Show",book_path(book), method: :get %></td>
+      <td><%= button_to "Edit",edit_book_path(book), method: :get %></td>
+      <td><%= button_to "Delete",book_path(book), method: :delete %></td>
+    </tr>
+    <% end %>
+</table>
+<h2>------------------</h2>
+<p><%= button_to '<h5>Create a Book</h5>'.html_safe, new_book_path, method: :get%></p>
+<h2>------------------</h2>
+<%= button_to "Log Out",destroy_user_session_path, method: :delete %>
+<% else %>
+<h2>------------------</h2>
+<h1>User's listing</h1>
+<table>
+    <th>User name</th>
+    <th>User Email</th>
+    <% @users.each do |user| %>
+    <tr>
+      <td><%= user.username %></td>
+      <td><%= user.email %></td>
+    </tr>
+    <% end %>
+</table>
+<h2>------------------</h2>
+<h1>Book's listing</h1>
+<table>
+    <th>Book name</th>
+    <th>Book Price</th>
+    <th>Book Genre</th>
+    <th>Book's user</th>
+    <% @books.each do |book| %>
+    <tr>
+      <td><%= book.name %></td>
+      <td><%= book.price %></td>
+      <td><%= book.genre %></td>
+      <td><%= book.user.username %></td>
+    </tr>
+    <% end %>
+</table>
+<h2>------------------</h2>
+<%= button_to "Sign Up",new_user_registration_path, method: :get %>
+<%= button_to "Sign In",new_user_session_path, method: :get %>
+<% end %>
