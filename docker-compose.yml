@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  db:
+    image: 'postgres:latest'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    # environment:
+    #   POSTGRES_PASSWORD: postgres
+    env_file:
+      - ./env/postgres.env
+    # container_name: postgres # to override container name
+    # networks:
+    #   - hardik-network
+  rails:
+    tty: true
+    stdin_open: true
+    build: ./
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/docker/app # add our local code to app of dockerfile
+      # - ./docker/app/Gemfile.lock  # add gemfile.lock which generted by dockerfile
+    depends_on:
+      - db  # add all dependant container
+
+volumes:
+  postgres: # we have to add all named volumes use in docker-compose
