@@ -3,6 +3,10 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = ::Article.all
+    CallbackJob.set(wait: 15.seconds).perform_later('hello hardik')
+    SidekiqJob.perform_at(10.seconds.from_now,'vekariya')
+    LowJob.perform_async
+    CriticalJob.perform_async
   end
 
   def show
@@ -16,7 +20,7 @@ class ArticlesController < ApplicationController
   def create 
     @article = Article.new(articles_params)
     if @article.save
-      ArticleMailer.with(article: @article).delay( priority: 0).welcome_article # send a mail
+      ArticleMailer.with(article: @article).delay( priority: 0).welcome_article # send a mail for delayed jobs
       TestDelayedJob.new.perform # just dummy method
       flash[:notice] = 'Article created successfully'
       redirect_to articles_path
@@ -30,7 +34,8 @@ class ArticlesController < ApplicationController
 
   def update
     if @article.update(articles_params)
-      ArticleMailer.with(article: @article).delay.update_article
+      ArticleMailer.with(article: @article).update_article.deliver_later # action mailer with default adapter
+      # ArticleMailer.with(article: @article).delay.update_article # delayed jobs
       flash[:notice] = 'Article updated successfully'
       redirect_to articles_path
     else
@@ -53,3 +58,4 @@ class ArticlesController < ApplicationController
     params.require(:article).permit(:title,:description)
   end
 end
+        
